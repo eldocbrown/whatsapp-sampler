@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Conversation Sampler</title>
+    <!-- Modern Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="pane left-pane">
+            <div class="pane-header">
+                <h1>Conversation Editor</h1>
+                <p>Type your message below. Use <strong>Agente:</strong> or <strong>Agent:</strong> for incoming messages (left side).</p>
+            </div>
+            <textarea id="editor" placeholder="E.g.&#10;Agente: ¡Hola! ¿Cómo te puedo ayudar hoy?&#10;Maria: Hola, quería saber más sobre la herramienta."></textarea>
+        </div>
+        <div class="pane right-pane">
+            <div class="whatsapp-container">
+                <div class="whatsapp-header">
+                    <div class="profile-pic"></div>
+                    <div class="header-info">
+                        <h2>Client Chat</h2>
+                        <span class="status">en línea</span>
+                    </div>
+                </div>
+                <div class="whatsapp-body" id="chat-preview">
+                    <!-- Chat bubbles will go here -->
+                </div>
+                <div class="whatsapp-footer">
+                    <div class="footer-input">Escribe un mensaje aquí...</div>
+                    <div class="footer-btn microphone"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,296 @@
+:root {
+    --primary-color: #00a884;
+    --bg-color: #f0f2f5;
+    --chat-bg: #efeae2;
+    --pane-bg: #ffffff;
+    --text-primary: #111b21;
+    --text-secondary: #667781;
+    --bubble-in: #ffffff;
+    --bubble-out: #d9fdd3;
+    --border-color: #d1d7db;
+    --shadow-soft: 0 4px 12px rgba(11, 20, 26, 0.05);
+    --shadow-hard: 0 2px 5px rgba(11, 20, 26, 0.1);
+    --bubble-radius: 8px;
+    --font-stack: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-stack);
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    height: 90vh;
+    background: var(--pane-bg);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    overflow: hidden;
+    margin: 0 20px;
+}
+
+/* Left Pane (Editor) */
+.left-pane {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border-color);
+    background-color: #fafbfc;
+}
+
+.pane-header {
+    padding: 24px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.pane-header h1 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.pane-header p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+#editor {
+    flex: 1;
+    width: 100%;
+    border: none;
+    padding: 24px;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background-color: transparent;
+    resize: none;
+    outline: none;
+}
+
+#editor::placeholder {
+    color: #aeb6bc;
+}
+
+/* Right Pane (WhatsApp Preview) */
+.right-pane {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--chat-bg);
+    position: relative;
+    /* Optional: chat background pattern */
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.627 0l.83.83v58.34h-58.34v-.83l57.51-58.34zM24 0l.83.83v58.34h-58.34v-.83l57.51-58.34z' fill='%23e0d8cf' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
+    background-size: cover;
+}
+
+.whatsapp-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+.whatsapp-header {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    background-color: var(--bg-color);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 1px 3px rgba(11,20,26,0.05);
+    z-index: 10;
+}
+
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    background-color: #dfe5e7;
+    border-radius: 50%;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-pic::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    background-color: #fff;
+    border-radius: 50%;
+    opacity: 0.8;
+}
+
+.header-info h2 {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+
+.header-info .status {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.whatsapp-body {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    scroll-behavior: smooth;
+}
+
+.whatsapp-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.whatsapp-body::-webkit-scrollbar-thumb {
+    background: rgba(11,20,26,0.2);
+    border-radius: 3px;
+}
+
+.whatsapp-footer {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    background-color: var(--bg-color);
+    border-top: 1px solid var(--border-color);
+}
+
+.footer-input {
+    flex: 1;
+    background-color: #fff;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 15px;
+    color: var(--text-secondary);
+    border: 1px solid #fff;
+    box-shadow: inset 0 1px 1px rgba(11,20,26,0.05);
+}
+
+.footer-btn {
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+    border-radius: 50%;
+    background-color: transparent;
+}
+
+/* Chat Bubbles */
+.message {
+    max-width: 75%;
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.message.in {
+    align-self: flex-start;
+}
+
+.message.out {
+    align-self: flex-end;
+}
+
+.bubble {
+    padding: 8px 12px;
+    font-size: 14px;
+    line-height: 19px;
+    color: var(--text-primary);
+    box-shadow: var(--shadow-hard);
+    position: relative;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.message.in .bubble {
+    background-color: var(--bubble-in);
+    border-radius: 0 var(--bubble-radius) var(--bubble-radius) var(--bubble-radius);
+    border-top-left-radius: 0;
+}
+
+.message.out .bubble {
+    background-color: var(--bubble-out);
+    border-radius: var(--bubble-radius) 0 var(--bubble-radius) var(--bubble-radius);
+    border-top-right-radius: 0;
+}
+
+/* Tail tweaks */
+.message.in .bubble::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -8px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 8px 10px 0;
+    border-color: transparent var(--bubble-in) transparent transparent;
+}
+
+.message.out .bubble::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -8px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 0 10px 8px;
+    border-color: transparent transparent transparent var(--bubble-out);
+}
+
+.message-sender {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--primary-color);
+    margin-bottom: 4px;
+}
+
+.message.out .message-sender {
+    display: none; /* Usually outgoing messages hide the sender name */
+}
+
+/* Timestamp mock */
+.message-time {
+    font-size: 11px;
+    color: var(--text-secondary);
+    align-self: flex-end;
+    margin-top: 4px;
+    margin-left: 12px;
+}
+
+.message.out .message-time {
+    color: #667781;
+}
+
+/* Subtle double ticks icon for outgoing */
+.message.out .message-time::after {
+    content: ' ✓✓';
+    color: #53bdeb; /* read receipt color */
+    letter-spacing: -2px;
+}
