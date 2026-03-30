@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateChat() {
         const text = editor.value;
         const lines = text.split('\n');
-        
+
         let messages = [];
         let currentMessage = null;
 
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
-            
+
             // Skip purely empty lines if we have no current message
             if (line.trim() === '' && !currentMessage) continue;
 
@@ -29,12 +29,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (currentMessage) {
                     messages.push(currentMessage);
                 }
-                
+
                 const name = match[1].trim();
                 const content = match[2].trim();
-                
+
                 const isAgent = (name.toLowerCase() === 'agent' || name.toLowerCase() === 'agente');
-                
+
                 currentMessage = {
                     sender: name,
                     isAgent: isAgent,
@@ -113,13 +113,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const container = document.querySelector('.whatsapp-container');
             const body = document.querySelector('.whatsapp-body');
 
-            // Provide immediate visual feedback
-            const originalTooltipText = tooltip.textContent;
-            tooltip.textContent = "Copiando...";
-            tooltip.style.opacity = "1";
-            tooltip.style.visibility = "visible";
-            tooltip.style.transitionDelay = "0s"; // override 2s delay immediately
-
             // Save original CSS
             const origContainerProps = {
                 height: container.style.height,
@@ -134,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Expand container fully to capture all content
             container.style.height = 'auto';
             container.style.overflow = 'visible';
-            
+
             body.style.height = body.scrollHeight + 'px';
             body.style.overflow = 'visible';
             body.style.flex = 'none';
