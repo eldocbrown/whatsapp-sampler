@@ -125,6 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             // Expand container fully to capture all content
+            container.classList.add('exporting');
             container.style.height = 'auto';
             container.style.overflow = 'visible';
 
@@ -162,6 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(resetTooltip, 2000);
             } finally {
                 // Instantly restore the scroll view
+                container.classList.remove('exporting');
                 container.style.height = origContainerProps.height;
                 container.style.overflow = origContainerProps.overflow;
 
