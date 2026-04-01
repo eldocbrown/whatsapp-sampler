@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,14 +11,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="container">
         <div class="pane left-pane">
             <div class="pane-header">
                 <h1>Conversation Editor</h1>
-                <p>Type your message below. Use <strong>Agente:</strong> or <strong>Agent:</strong> for incoming messages (left side).</p>
+                <p>Type your message below.<br>
+                    <i>
+                        Use <strong>Agent:</strong> for incoming messages (left side).<br>
+                        Use <strong>[Button Text]</strong> to add buttons to Agent messages.
+                    </i>
+                </p>
             </div>
-            <textarea id="editor" placeholder="E.g.&#10;Agente: ¡Hola! ¿Cómo te puedo ayudar hoy?&#10;Maria: Hola, quería saber más sobre la herramienta."></textarea>
+            <textarea id="editor"
+                placeholder="E.g.&#10;Agent: ¡Hola! ¿Cómo te puedo ayudar hoy?&#10;Maria: Hola, quería saber más sobre la herramienta."></textarea>
         </div>
         <div class="pane right-pane">
             <div class="whatsapp-container">
@@ -35,7 +43,8 @@
                     <div class="footer-input">Escribe un mensaje aquí...</div>
                     <button class="footer-btn copy-btn" id="copy-chat-btn">
                         <svg viewBox="0 0 24 24" width="24" height="24" fill="#667781">
-                            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                            <path
+                                d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
                         </svg>
                         <span class="tooltip">Copiar imagen</span>
                     </button>
@@ -48,4 +57,5 @@
     <script src="renderer.js"></script>
     <script src="app.js"></script>
 </body>
+
 </html>
