@@ -1,0 +1,97 @@
+/**
+ * @jest-environment jsdom
+ */
+
+const { renderMessages } = require('./renderer');
+
+describe('renderMessages', () => {
+    let previewElement;
+
+    beforeEach(() => {
+        document.body.innerHTML = '<div id="preview"></div>';
+        previewElement = document.getElementById('preview');
+        
+        Object.defineProperty(previewElement, 'scrollTop', { writable: true, value: 0 });
+        Object.defineProperty(previewElement, 'scrollHeight', { writable: false, value: 100 });
+    });
+
+    test('should clear previous content', () => {
+        previewElement.innerHTML = '<div>Old content</div>';
+        renderMessages([], previewElement);
+        expect(previewElement.innerHTML).toBe('');
+    });
+
+    test('should render a user (non-agent) message correctly', () => {
+        const messages = [
+            { isAgent: false, sender: 'User', text: ['Hello'] }
+        ];
+
+        renderMessages(messages, previewElement);
+
+        const msgDivs = previewElement.querySelectorAll('.message');
+        expect(msgDivs.length).toBe(1);
+        
+        const msgDiv = msgDivs[0];
+        expect(msgDiv.classList.contains('out')).toBe(true);
+        expect(msgDiv.classList.contains('in')).toBe(false);
+
+        const senderSpan = msgDiv.querySelector('.message-sender');
+        expect(senderSpan).toBeNull(); 
+
+        const textSpan = msgDiv.querySelector('span:not(.message-time)');
+        expect(textSpan.innerHTML).toBe('Hello');
+    });
+
+    test('should render an agent message correctly', () => {
+        const messages = [
+            { isAgent: true, sender: 'Support', text: ['Hi there', 'How can I help?'] }
+        ];
+
+        renderMessages(messages, previewElement);
+
+        const msgDivs = previewElement.querySelectorAll('.message');
+        expect(msgDivs.length).toBe(1);
+        
+        const msgDiv = msgDivs[0];
+        expect(msgDiv.classList.contains('in')).toBe(true);
+        expect(msgDiv.classList.contains('out')).toBe(false);
+
+        const senderSpan = msgDiv.querySelector('.message-sender');
+        expect(senderSpan).not.toBeNull();
+        expect(senderSpan.textContent).toBe('Support');
+
+        const textSpan = msgDiv.querySelector('span:not(.message-time)');
+        expect(textSpan.innerHTML).toBe('Hi there<br>How can I help?');
+    });
+
+    test('should render multiple messages', () => {
+        const messages = [
+            { isAgent: false, sender: 'User', text: ['Hi'] },
+            { isAgent: true, sender: 'Support', text: ['Hello', 'How can I help?'] }
+        ];
+
+        renderMessages(messages, previewElement);
+
+        const msgDivs = previewElement.querySelectorAll('.message');
+        expect(msgDivs.length).toBe(2);
+        expect(msgDivs[0].classList.contains('out')).toBe(true);
+        expect(msgDivs[1].classList.contains('in')).toBe(true);
+    });
+
+    test('should add time to messages', () => {
+        const messages = [
+            { isAgent: false, sender: 'User', text: ['Hi'] }
+        ];
+
+        renderMessages(messages, previewElement);
+
+        const timeSpan = previewElement.querySelector('.message-time');
+        expect(timeSpan).not.toBeNull();
+        expect(timeSpan.textContent).toMatch(/^\d{2}:\d{2}$/);
+    });
+
+    test('should scroll to bottom', () => {
+        renderMessages([], previewElement);
+        expect(previewElement.scrollTop).toBe(100);
+    });
+});

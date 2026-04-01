@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-const { parseChatText } = require('./app');
+const { parseChatText } = require('./parser');
 
 describe('parseChatText', () => {
     test('should parse a basic conversation between two users', () => {
