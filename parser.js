@@ -53,6 +53,46 @@ function parseChatText(text) {
         messages.push(currentMessage);
     }
 
+    messages.forEach(msg => {
+        if (msg.isAgent) {
+            const buttons = [];
+            const newText = [];
+            let inButtonSection = false;
+
+            for (let i = 0; i < msg.text.length; i++) {
+                const line = msg.text[i].trim();
+                
+                if (line === '') {
+                    if (!inButtonSection) {
+                        newText.push(msg.text[i]); // Preserve original empty lines before buttons
+                    }
+                    continue;
+                }
+
+                const match = line.match(/^\[(.*?)\]$/);
+                if (match) {
+                    inButtonSection = true;
+                    buttons.push(match[1].trim());
+                } else {
+                    if (!inButtonSection) {
+                        newText.push(msg.text[i]);
+                    }
+                    // If we are in the button section, we dismiss this text.
+                }
+            }
+
+            if (buttons.length > 0) {
+                msg.buttons = buttons;
+                msg.text = newText;
+                
+                // remove trailing empty lines from the remaining text
+                while(msg.text.length > 0 && msg.text[msg.text.length - 1].trim() === '') {
+                    msg.text.pop();
+                }
+            }
+        }
+    });
+
     return messages;
 }
 

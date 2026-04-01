@@ -336,3 +336,30 @@ body {
     color: #53bdeb; /* read receipt color */
     letter-spacing: -2px;
 }
+
+/* Interactive Buttons */
+.message-buttons {
+    display: flex;
+    flex-direction: column;
+    margin-top: 4px;
+    gap: 4px;
+    width: 100%;
+}
+
+.message-button {
+    background-color: var(--bubble-in);
+    color: #00a884;
+    padding: 10px 15px;
+    border-radius: var(--bubble-radius);
+    font-size: 14.5px;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: var(--shadow-hard);
+    user-select: none;
+    transition: background-color 0.2s;
+}
+
+.message-button:hover {
+    background-color: #f5f6f6;
+}

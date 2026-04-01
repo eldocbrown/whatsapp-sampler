@@ -30,6 +30,19 @@ function renderMessages(messages, previewElement) {
         bubbleDiv.appendChild(timeSpan);
 
         msgDiv.appendChild(bubbleDiv);
+
+        if (msg.buttons && msg.buttons.length > 0) {
+            const buttonsContainer = document.createElement('div');
+            buttonsContainer.className = 'message-buttons';
+            msg.buttons.forEach(btnText => {
+                const btnElement = document.createElement('div');
+                btnElement.className = 'message-button';
+                btnElement.textContent = btnText;
+                buttonsContainer.appendChild(btnElement);
+            });
+            msgDiv.appendChild(buttonsContainer);
+        }
+
         previewElement.appendChild(msgDiv);
     });
 

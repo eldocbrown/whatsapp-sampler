@@ -94,4 +94,38 @@ Agente: Hola Maria.`;
         const result = parseChatText('');
         expect(result).toHaveLength(0);
     });
+
+    test('should extract buttons from agent messages', () => {
+        const text = `Agente: Hola
+¿Te interesa?
+[Sí, me interesa]
+[No por ahora]`;
+        const result = parseChatText(text);
+        expect(result).toHaveLength(1);
+        expect(result[0].text).toEqual(['Hola', '¿Te interesa?']);
+        expect(result[0].buttons).toEqual(['Sí, me interesa', 'No por ahora']);
+    });
+
+    test('should not extract buttons from non-agent messages', () => {
+        const text = `Cliente: Mi mensaje
+[Boton falso]`;
+        const result = parseChatText(text);
+        expect(result).toHaveLength(1);
+        expect(result[0].text).toEqual(['Mi mensaje', '[Boton falso]']);
+        expect(result[0].buttons).toBeUndefined();
+    });
+
+    test('should dismiss text after buttons in agent messages', () => {
+        const text = `Agente: Hola
+¿Te interesa?
+[Sí, me interesa]
+[No por ahora]
+Este texto debe ser ignorado completamente.
+Y este también.`;
+        const result = parseChatText(text);
+        expect(result).toHaveLength(1);
+        expect(result[0].text).toEqual(['Hola', '¿Te interesa?']);
+        expect(result[0].buttons).toEqual(['Sí, me interesa', 'No por ahora']);
+    });
 });
+

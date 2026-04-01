@@ -94,4 +94,21 @@ describe('renderMessages', () => {
         renderMessages([], previewElement);
         expect(previewElement.scrollTop).toBe(100);
     });
+
+    test('should render buttons for agent messages when present', () => {
+        const messages = [
+            { isAgent: true, sender: 'Support', text: ['Choose:'], buttons: ['Option 1', 'Option 2'] }
+        ];
+
+        renderMessages(messages, previewElement);
+
+        const msgDiv = previewElement.querySelector('.message');
+        const buttonsContainer = msgDiv.querySelector('.message-buttons');
+        expect(buttonsContainer).not.toBeNull();
+        
+        const buttons = buttonsContainer.querySelectorAll('.message-button');
+        expect(buttons.length).toBe(2);
+        expect(buttons[0].textContent).toBe('Option 1');
+        expect(buttons[1].textContent).toBe('Option 2');
+    });
 });
