@@ -1,5 +1,5 @@
 function parseChatText(text) {
-    const lines = text.split('\n');
+    const lines = text.replace(/\r/g, '').replace(/\u2028|\u2029/g, '\n').split('\n');
 
     let messages = [];
     let currentMessage = null;
@@ -13,8 +13,9 @@ function parseChatText(text) {
         if (line.trim() === '' && !currentMessage) continue;
 
         const match = line.match(senderRegex);
+        const isImageLine = line.trim().match(/^\[img:\s*.*?\]$/i);
 
-        if (match) {
+        if (match && !isImageLine) {
             // New sender
             if (currentMessage) {
                 messages.push(currentMessage);
@@ -60,35 +61,42 @@ function parseChatText(text) {
             let inButtonSection = false;
 
             for (let i = 0; i < msg.text.length; i++) {
-                const line = msg.text[i].trim();
+                let lineContent = msg.text[i];
+                let trimmedLine = lineContent.trim();
                 
-                if (line === '') {
+                if (trimmedLine === '') {
                     if (!inButtonSection) {
-                        newText.push(msg.text[i]); // Preserve original empty lines before buttons
+                        newText.push(lineContent);
                     }
                     continue;
                 }
 
-                const match = line.match(/^\[(.*?)\]$/);
-                if (match) {
+                // Check for image: [img: URL]
+                const imgMatch = trimmedLine.match(/\[img:\s*(.*?)\]/i);
+                if (imgMatch) {
+                    msg.image = imgMatch[1].trim();
+                    // Remove the [img: URL] part from the line
+                    lineContent = lineContent.replace(/\[img:\s*.*?\]/i, '').trim();
+                    if (lineContent === '') continue; // skip if line was only the image tag
+                    trimmedLine = lineContent.trim();
+                }
+
+                const buttonMatch = trimmedLine.match(/^\[(.*?)\]$/);
+                if (buttonMatch) {
                     inButtonSection = true;
-                    buttons.push(match[1].trim());
+                    buttons.push(buttonMatch[1].trim());
                 } else {
                     if (!inButtonSection) {
-                        newText.push(msg.text[i]);
+                        newText.push(lineContent);
                     }
-                    // If we are in the button section, we dismiss this text.
                 }
             }
 
-            if (buttons.length > 0) {
-                msg.buttons = buttons;
-                msg.text = newText;
-                
-                // remove trailing empty lines from the remaining text
-                while(msg.text.length > 0 && msg.text[msg.text.length - 1].trim() === '') {
-                    msg.text.pop();
+            if (buttons.length > 0 || msg.image) {
+                if (buttons.length > 0) {
+                    msg.buttons = buttons;
                 }
+                msg.text = newText;
             }
         }
     });

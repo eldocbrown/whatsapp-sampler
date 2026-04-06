@@ -127,5 +127,31 @@ Y este también.`;
         expect(result[0].text).toEqual(['Hola', '¿Te interesa?']);
         expect(result[0].buttons).toEqual(['Sí, me interesa', 'No por ahora']);
     });
+    test('should extract image from agent messages and remove tag from text', () => {
+        const text = `Agente: Hola [img: https://example.com/test.jpg]
+¿Te interesa?`;
+        const result = parseChatText(text);
+        expect(result).toHaveLength(1);
+        expect(result[0].image).toBe('https://example.com/test.jpg');
+        expect(result[0].text).toEqual(['Hola', '¿Te interesa?']);
+    });
+
+    test('should extract image from a separate line in agent messages', () => {
+        const text = `Agente: Hola
+[img: https://example.com/test.jpg]
+¿Te interesa?`;
+        const result = parseChatText(text);
+        expect(result).toHaveLength(1);
+        expect(result[0].image).toBe('https://example.com/test.jpg');
+        expect(result[0].text).toEqual(['Hola', '¿Te interesa?']);
+    });
+
+    test('should not extract image from non-agent messages', () => {
+        const text = `Cliente: [img: https://example.com/test.jpg]`;
+        const result = parseChatText(text);
+        expect(result).toHaveLength(1);
+        expect(result[0].image).toBeUndefined();
+        expect(result[0].text).toEqual(['[img: https://example.com/test.jpg]']);
+    });
 });
 

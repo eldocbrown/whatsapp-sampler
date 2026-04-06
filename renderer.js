@@ -19,6 +19,16 @@ function renderMessages(messages, previewElement) {
             bubbleDiv.appendChild(senderSpan);
         }
 
+        if (msg.image) {
+            const imgContainer = document.createElement('div');
+            imgContainer.className = 'bubble-image-container';
+            const imgElement = document.createElement('img');
+            imgElement.src = msg.image;
+            imgElement.className = 'bubble-image';
+            imgContainer.appendChild(imgElement);
+            bubbleDiv.appendChild(imgContainer);
+        }
+
         const textSpan = document.createElement('span');
         // Join array with new lines
         textSpan.innerHTML = msg.text.join('\n').replace(/\n/g, '<br>');

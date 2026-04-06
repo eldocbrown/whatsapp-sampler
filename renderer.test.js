@@ -111,4 +111,29 @@ describe('renderMessages', () => {
         expect(buttons[0].textContent).toBe('Option 1');
         expect(buttons[1].textContent).toBe('Option 2');
     });
+    test('should render an image at the top of the bubble for agent messages', () => {
+        const messages = [
+            { isAgent: true, sender: 'Support', text: ['Hello'], image: 'https://example.com/test.jpg' }
+        ];
+
+        renderMessages(messages, previewElement);
+
+        const msgDiv = previewElement.querySelector('.message');
+        const imgContainer = msgDiv.querySelector('.bubble-image-container');
+        expect(imgContainer).not.toBeNull();
+        
+        const imgElement = imgContainer.querySelector('img.bubble-image');
+        expect(imgElement).not.toBeNull();
+        expect(imgElement.src).toBe('https://example.com/test.jpg');
+
+        // Check order: sender -> image -> text
+        const bubble = msgDiv.querySelector('.bubble');
+        const children = Array.from(bubble.childNodes);
+        const senderIndex = children.findIndex(n => n.classList?.contains('message-sender'));
+        const imageIndex = children.findIndex(n => n.classList?.contains('bubble-image-container'));
+        const textIndex = children.findIndex(n => n.tagName === 'SPAN' && !n.classList.contains('message-time'));
+
+        expect(senderIndex).toBeLessThan(imageIndex);
+        expect(imageIndex).toBeLessThan(textIndex);
+    });
 });
