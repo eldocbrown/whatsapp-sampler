@@ -136,4 +136,28 @@ describe('renderMessages', () => {
         expect(senderIndex).toBeLessThan(imageIndex);
         expect(imageIndex).toBeLessThan(textIndex);
     });
+
+    test('should render bold text when wrapped in asterisks for agent messages', () => {
+        const messages = [
+            { isAgent: true, sender: 'Support', text: ['El precio es de *90 MXN*.'] }
+        ];
+
+        renderMessages(messages, previewElement);
+
+        const msgDiv = previewElement.querySelector('.message');
+        const textSpan = msgDiv.querySelector('span:not(.message-time)');
+        expect(textSpan.innerHTML).toBe('El precio es de <strong>90 MXN</strong>.');
+    });
+
+    test('should NOT render bold text when wrapped in asterisks for non-agent messages', () => {
+        const messages = [
+            { isAgent: false, sender: 'Juan', text: ['El precio es de *90 MXN*.'] }
+        ];
+
+        renderMessages(messages, previewElement);
+
+        const msgDiv = previewElement.querySelector('.message');
+        const textSpan = msgDiv.querySelector('span:not(.message-time)');
+        expect(textSpan.innerHTML).toBe('El precio es de *90 MXN*.');
+    });
 });

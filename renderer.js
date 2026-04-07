@@ -1,3 +1,26 @@
+function formatWhatsAppText(text, isAgent) {
+    if (!text) return '';
+    
+    // HTML Escaping
+    let formatted = text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+
+    // Bold: *text* -> <strong>text</strong>
+    // Only applied for agent messages
+    if (isAgent) {
+        formatted = formatted.replace(/\*(.+?)\*/g, '<strong>$1</strong>');
+    }
+
+    // Newlines to <br>
+    formatted = formatted.replace(/\n/g, '<br>');
+
+    return formatted;
+}
+
 function renderMessages(messages, previewElement) {
     previewElement.innerHTML = '';
 
@@ -30,8 +53,8 @@ function renderMessages(messages, previewElement) {
         }
 
         const textSpan = document.createElement('span');
-        // Join array with new lines
-        textSpan.innerHTML = msg.text.join('\n').replace(/\n/g, '<br>');
+        // Join array with new lines and format
+        textSpan.innerHTML = formatWhatsAppText(msg.text.join('\n'), msg.isAgent);
         bubbleDiv.appendChild(textSpan);
 
         const timeSpan = document.createElement('span');
