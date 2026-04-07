@@ -160,4 +160,28 @@ describe('renderMessages', () => {
         const textSpan = msgDiv.querySelector('span:not(.message-time)');
         expect(textSpan.innerHTML).toBe('El precio es de *90 MXN*.');
     });
+
+    test('should render italic text when wrapped in underscores for agent messages', () => {
+        const messages = [
+            { isAgent: true, sender: 'Support', text: ['El precio es de _90 MXN_.'] }
+        ];
+
+        renderMessages(messages, previewElement);
+
+        const msgDiv = previewElement.querySelector('.message');
+        const textSpan = msgDiv.querySelector('span:not(.message-time)');
+        expect(textSpan.innerHTML).toBe('El precio es de <em>90 MXN</em>.');
+    });
+
+    test('should NOT render italic text when wrapped in underscores for non-agent messages', () => {
+        const messages = [
+            { isAgent: false, sender: 'Juan', text: ['El precio es de _90 MXN_.'] }
+        ];
+
+        renderMessages(messages, previewElement);
+
+        const msgDiv = previewElement.querySelector('.message');
+        const textSpan = msgDiv.querySelector('span:not(.message-time)');
+        expect(textSpan.innerHTML).toBe('El precio es de _90 MXN_.');
+    });
 });

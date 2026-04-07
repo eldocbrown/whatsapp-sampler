@@ -10,9 +10,11 @@ function formatWhatsAppText(text, isAgent) {
         .replace(/'/g, '&#039;');
 
     // Bold: *text* -> <strong>text</strong>
+    // Italic: _text_ -> <em>text</em>
     // Only applied for agent messages
     if (isAgent) {
         formatted = formatted.replace(/\*(.+?)\*/g, '<strong>$1</strong>');
+        formatted = formatted.replace(/_(.+?)_/g, '<em>$1</em>');
     }
 
     // Newlines to <br>
